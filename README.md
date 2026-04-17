@@ -1,4 +1,4 @@
-# Vozy — Installation & handoff guide
+# Vozy: Installation & handoff guide
 
 This document is written for **whoever installs or ships this extension** (another developer, QA, or a power user). It assumes you have the project folder on disk (for example after cloning a repo or unzipping a release) and need to load it into Chromium-based browsers on a PC or Mac.
 
@@ -15,14 +15,14 @@ This document is written for **whoever installs or ships this extension** (anoth
 | Requirement | Notes |
 |-------------|--------|
 | **Browser** | Google Chrome or another **Chromium** browser that supports Manifest V3 extensions (e.g. Microsoft Edge, Brave). |
-| **OS** | Windows, macOS, or Linux — anywhere that browser runs. |
+| **OS** | Windows, macOS, or Linux, anywhere that browser runs. |
 | **Microphone** | Physical or built-in mic; browser will prompt for permission. |
 | **Internet** | Required for AssemblyAI streaming API. |
 | **AssemblyAI account** | Create an account at [AssemblyAI](https://www.assemblyai.com/), generate an **API key** from the dashboard. |
 
 ---
 
-## Step 1 — Get the files on the machine
+## Step 1: Get the files on the machine
 
 1. Copy the entire extension directory to the target machine (USB, shared drive, `git clone`, or zip extract).
 2. Keep the folder structure intact. At minimum you should see:
@@ -37,7 +37,7 @@ Do **not** nest the extension inside another random folder in a way that breaks 
 
 ---
 
-## Step 2 — Load the extension (unpacked)
+## Step 2: Load the extension (unpacked)
 
 These steps are for **Google Chrome**; Edge is similar (`edge://extensions`).
 
@@ -45,13 +45,15 @@ These steps are for **Google Chrome**; Edge is similar (`edge://extensions`).
 2. Turn **Developer mode** ON (top-right toggle).
 3. Click **Load unpacked**.
 4. Choose the **folder that contains `manifest.json`** (the extension root, e.g. `voicetoprompt` on your disk).
-5. Confirm **Vozy** appears in the list with no errors.
+5. Confirm **Vozy** appears in the list.
+6. Ignore the "The ScriptProcessorNode is deprecated. Use AudioWorkletNode instead" Error.
+7. Raise a PR for any other erros.
 
 **Updates after code changes:** On `chrome://extensions`, click **Reload** on the extension card.
 
 ---
 
-## Step 3 — Pin the icon (optional but recommended)
+## Step 3: Pin the icon (optional but recommended)
 
 1. Click the **puzzle piece** (Extensions) in the Chrome toolbar.
 2. Find **Vozy** and click the **pin** icon so it stays visible.
@@ -60,26 +62,26 @@ The toolbar icon uses `logo.png` from the manifest.
 
 ---
 
-## Step 4 — Configure AssemblyAI (required)
+## Step 4: Configure AssemblyAI (required)
 
 Without a valid API key, transcription will fail.
 
-### Option A — Extension options page
+### Option A: Extension options page
 
 1. On `chrome://extensions`, under **Vozy**, click **Details**.
 2. Open **Extension options** (or right-click the toolbar icon → **Options** if wired).
 3. Set:
-   - **AssemblyAI API key** — paste the key from the AssemblyAI dashboard.
-   - **Speech language** — choose the language code that matches your AssemblyAI usage.
+   - **AssemblyAI API key:** paste the key from the AssemblyAI dashboard.
+   - **Speech language:** choose the language code that matches your AssemblyAI usage.
 4. Changes save when you leave the field / save flow as implemented in `options.js`.
 
-### Option B — Defaults in code (if you ship a private build)
+### Option B: Defaults in code (if you ship a private build)
 
 Some builds may seed a default key in code for internal testing. **Do not ship production builds with embedded secrets.** Rotate keys if they were ever committed or shared.
 
 ---
 
-## Step 5 — Browser permissions you will see
+## Step 5: Browser permissions you will see
 
 | Permission / prompt | Why |
 |---------------------|-----|
@@ -88,7 +90,7 @@ Some builds may seed a default key in code for internal testing. **Do not ship p
 
 ---
 
-## Step 6 — Chrome command shortcut (global)
+## Step 6: Chrome command shortcut (global)
 
 The manifest registers a command **`toggle-dictation`** with a suggested binding of **`Ctrl+Shift+V`** (macOS: **`Command+Shift+V`**).
 
@@ -102,13 +104,13 @@ That shortcut is handled by the **background service worker** and is used to **o
 
 ---
 
-## Step 7 — In-page panel shortcut (per user)
+## Step 7: In-page panel shortcut (per user)
 
-Inside the on-page panel there is a **read-only shortcut field**. Focus it and press the desired key combination; it is stored in **`chrome.storage.sync`** as `panelShortcut` (see `content_script.js`). That is separate from the Chrome **commands** shortcut above; both may exist — document for your users which one you want them to rely on.
+Inside the on-page panel there is a **read-only shortcut field**. Focus it and press the desired key combination; it is stored in **`chrome.storage.sync`** as `panelShortcut` (see `content_script.js`). That is separate from the Chrome **commands** shortcut above; both may exist, so document for your users which one you want them to rely on.
 
 ---
 
-## Step 8 — Day-to-day usage (typical flow)
+## Step 8: Day-to-day usage (typical flow)
 
 1. Open a normal website (not `chrome://settings`, etc.).
 2. Click into the field where you want text (input, textarea, or editor).
@@ -120,19 +122,19 @@ Inside the on-page panel there is a **read-only shortcut field**. Focus it and p
 
 ### Erase codeword
 
-Users can set an **erase key** (spoken word) in the panel or options to remove characters when recognized in the transcript stream — see `eraseCodeword` / `eraseCodeword` handling in `content_script.js`.
+Users can set an **erase key** (spoken word) in the panel or options to remove characters when recognized in the transcript stream. See `eraseCodeword` handling in `content_script.js`.
 
 ---
 
-## Step 9 — Troubleshooting (for support / developers)
+## Step 9: Troubleshooting (for support / developers)
 
 | Symptom | Things to check |
 |---------|-------------------|
 | Panel never appears | Page must allow scripts; try a normal HTTPS site. Reload extension. Check DevTools console on the page for errors. |
 | “API key missing” or AssemblyAI errors | Open options; confirm key. Check AssemblyAI dashboard for quota/billing. |
 | No microphone | OS privacy settings (Windows/macOS), Chrome site permissions, correct input device. |
-| Shortcut conflicts | Another extension or OS hotkey may steal the combo — change at `chrome://extensions/shortcuts`. |
-| Text does not update in a specific app | Some shadow-DOM or heavily sandboxed editors are hard; insertion uses standard DOM + `input`/`change` events — may need app-specific follow-up. |
+| Shortcut conflicts | Another extension or OS hotkey may steal the combo. Change it at `chrome://extensions/shortcuts`. |
+| Text does not update in a specific app | Some shadow-DOM or heavily sandboxed editors are hard. Insertion uses standard DOM and `input`/`change` events and may need app-specific follow-up. It might not work on sites with their own built-in voice-to-text. |
 
 **Developer inspection:**
 
@@ -170,9 +172,9 @@ Users can set an **erase key** (spoken word) in the panel or options to remove c
 
 ---
 
-## License / distribution
+## Support the developer
 
-If you redistribute this project, ship your own `logo.png` and branding if required, replace any placeholder API keys, and include a privacy notice that describes AssemblyAI processing.
+If **Vozy** saved you time or you want to encourage updates and maintenance, you can leave a small tip on [**Buy Me a Coffee**](https://buymeacoffee.com/abduwu).
 
 ---
 
