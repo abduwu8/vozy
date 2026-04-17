@@ -1,3 +1,5 @@
+![Demo](./demogif.gif)
+
 # Vozy: Installation & handoff guide
 
 This document is written for **whoever installs or ships this extension** (another developer, QA, or a power user). It assumes you have the project folder on disk (for example after cloning a repo or unzipping a release) and need to load it into Chromium-based browsers on a PC or Mac.
