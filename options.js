@@ -1,7 +1,7 @@
 const STORAGE_KEY = "voiceToPromptSettings";
 const DEFAULT_SETTINGS = {
   language: "en_us",
-  assemblyApiKey: "8ee31ce8f463406b8a57028ba2e7014e",
+  assemblyApiKey: "",
   eraseCodeword: "apple",
 };
 
