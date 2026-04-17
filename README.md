@@ -180,4 +180,3 @@ If **Vozy** saved you time or you want to encourage updates and maintenance, you
 
 ---
 
-*End of handoff. For code-level behavior, treat `content_script.js` and `background/service_worker.js` as the source of truth if this README drifts.*
