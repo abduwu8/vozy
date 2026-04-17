@@ -176,7 +176,7 @@ Users can set an **erase key** (spoken word) in the panel or options to remove c
 
 ## Support the developer
 
-If **Vozy** saved you time or you want to encourage updates and maintenance, you can leave a small tip on [**Buy Me a Coffee**](https://buymeacoffee.com/abduwu).
+ **Vozy** is just lazy project for people who are too lazy to type, although you can leave a small tip on [**Buy Me a Coffee**](https://buymeacoffee.com/abduwu).
 
 ---
 
